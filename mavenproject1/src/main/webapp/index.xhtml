@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Student Form</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    </h:head>
+    <h:body class="container">
+        <h:outputStylesheet name="css/style.css" />
+        
+        <!--Form Elements-->
+        
+        <div id="mainform" class="card">
+            
+            <h:form>
+                <div class="header">
+                    <h4 class="text-white text-center py-2">Registration Form</h4> 
+                </div> 
+                <div class="row">
+                    <div class="column">
+                        <div class="form-group">
+                                
+                            <h:inputText a:placeholder="First Name" required="true" id="fname" class="inputtext form-control" value="#{studentForm.student.firstname}"  requiredMessage="This field is mandatory"></h:inputText>
+                            <h:message for="fname" styleClass="error"></h:message>  
+                            <br/>
+
+                            
+                            <h:inputText  a:placeholder="Middle Name" id="mname"  class="inputtext form-control" value="#{studentForm.student.middlename}"></h:inputText> 
+                            <br/>
+                            
+                           
+                            <h:inputText a:placeholder="Last Name" required="true" id="lname" class="inputtext form-control"  value="#{studentForm.student.lastname}" requiredMessage="This field is mandatory" ></h:inputText>
+                            <h:message for="lname" styleClass="error"></h:message>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="column">
+                        <h:selectOneMenu id="faculty" class="dropdown form-control" value="#{studentForm.student.faculty}"  required="true" requiredMessage="You must select one option.">  
+                            <p:ajax listener="#{studentForm.onFacultyChange()}" update="program" ></p:ajax>
+                            <f:selectItem itemLabel="Select Faculty" itemValue="" noSelectionOption="true"></f:selectItem>
+                            <f:selectItems value="#{studentForm.facultyOptions}"></f:selectItems>
+                        </h:selectOneMenu>
+                        <h:message for="faculty" styleClass="error"></h:message><br/>
+                        
+                        
+                      
+                        
+                        <h:selectOneMenu id="program" class="dropdown form-control" value="#{studentForm.student.program}"   requiredMessage="You must select one option."> 
+                            <f:selectItem itemLabel="Select Program" itemValue="" noSelectionOption="true"></f:selectItem>
+                            <f:selectItems value="#{studentForm.programOptions}"></f:selectItems>
+                        </h:selectOneMenu>
+                        <h:message for="program" styleClass="error"></h:message>
+                        
+                         
+                    </div>
+                    
+                </div>
+                        
+                <div class="centeralign">
+                    
+                    <h:panelGroup rendered="#{empty studentForm.editFlag}">
+                        <h:commandButton class="btn btn-info button" value = "Save"  action="#{studentForm.saveInfo()}" /> 
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not empty studentForm.editFlag}">
+                        <h:commandButton class="btn btn-info button" value = "Save Changes" action="#{studentForm.saveEdit()}"/>
+                    </h:panelGroup>
+                    
+                    
+
+                </div>
+                <br/>
+
+            
+        </h:form>  
+            
+        </div>
+        
+        
+        
+        <!--output elements-->
+        
+        
+        
+       
+        <div id ="output" class="card">
+            <div class="header">
+                    <h4 class="text-white text-center py-2">Student List</h4> 
+            </div> 
+            <h:dataTable id="outputtable" class="table" value = "#{studentForm.findAll()}" var = "val" >
+   
+                <h:column>    				
+                   <f:facet name = "header">First Name</f:facet>    				
+                   <h:outputText value="#{val.firstname}"/>
+                </h:column>
+
+                <h:column>
+                   <f:facet name = "header">Middle Name</f:facet>
+                   <h:outputText value="#{val.middlename}" />
+                </h:column>
+
+                <h:column>
+                   <f:facet name = "header">Last Name</f:facet>
+                   <h:outputText value="#{val.lastname}"/>
+                </h:column>
+
+                <h:column>
+                   <f:facet name = "header">Faculty</f:facet>
+                   <h:outputText value="#{val.faculty}"/>
+                </h:column>
+                 <h:column>
+                   <f:facet name = "header">Program</f:facet>
+                   <h:outputText value="#{val.program}"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name = "header">Actions</f:facet>
+                    <h:form>
+                        <h:commandLink value = "Delete" action="#{studentForm.delete(val)}" />
+                        <h:outputText value="&#160;" />
+                        <h:commandLink value = "Edit" action="#{studentForm.edit(val)}" />
+                    </h:form>
+                    
+                </h:column>
+        </h:dataTable>
+      </div>
+    </h:body>
+</html>
+

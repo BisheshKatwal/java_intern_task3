@@ -1,0 +1,6 @@
+com\mavenproject1\model\AbstractFacade.class
+com\mavenproject1\model\StudentFacade.class
+controller\StudentForm.class
+com\mavenproject1\JAXRSConfiguration.class
+com\mavenproject1\resources\JavaEE8Resource.class
+com\mavenproject1\Student.class
